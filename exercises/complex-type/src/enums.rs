@@ -1,3 +1,5 @@
+use core::num;
+
 // Exercise 1
 // Fill in the blank and fix the errors
 // Make it compile
@@ -30,6 +32,10 @@ fn exercise1() {
 // Run tests
 enum Message {
     // TODO: implement the message variant types based on their usage below
+    Quit,
+    Move { x: i32, y: i32 },
+    Echo(String),
+    ChangeColor(i32, i32, i32),
 }
 
 struct Point {
@@ -61,6 +67,15 @@ impl State {
     }
 
     fn process(&mut self, message: Message) {
+        match message {
+            Message::Quit => self.quit = true,
+            Message::Move { x, y } => self.move_position(Point { x: x as u8, y: y as u8 }),
+            Message::Echo(s) => self.echo(s),
+            Message::ChangeColor(x, y, z) => {
+                let color = (x as u8,y as u8,z as u8);
+                self.change_color(color);
+            },
+        }
         // TODO: create a match expression to process the different message variants
         // Remember: When passing a tuple as a function argument, you'll need extra parentheses: fn function((t, u, p, l, e))
     }
@@ -70,6 +85,8 @@ impl State {
 // Exercise 3
 // Fix the errors
 // Run tests
+#[derive(PartialEq)]
+#[derive(Debug)]
 enum Direction {
     North,
     East,
@@ -80,7 +97,10 @@ enum Direction {
 impl Direction {
     fn opposite(&self) -> Direction {
         match self {
-            //TODO
+            Direction::North => Direction::South,
+            Direction::East => Direction::West,
+            Direction::South => Direction::North,
+            Direction::West => Direction::East,
         }
     }
 }
@@ -100,6 +120,10 @@ enum Operation {
 // Perform arithmetic operations
 fn perform_operation(operation: Operation, num1: f64, num2: f64) -> f64 {
     match operation {
+        Operation::Add => num1 + num2,
+        Operation::Subtract => num1 - num2,
+        Operation::Multiply => num1 * num2,
+        Operation::Divide => num1 / num2,
         // TODO
     }
 }
@@ -119,8 +143,8 @@ mod tests {
             color: (0, 0, 0),
         };
         state.process(Message::ChangeColor(255, 0, 255));
-        state.process(Message::Echo(String::from("hello world")));
-        state.process(Message::Move(Point { x: 10, y: 15 }));
+        state.process(Message::Echo("hello world".to_string()));
+        state.process(Message::Move{x : 10, y : 15 });
         state.process(Message::Quit);
 
         assert_eq!(state.color, (255, 0, 255));
