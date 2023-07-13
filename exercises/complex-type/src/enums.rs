@@ -1,6 +1,7 @@
 // Exercise 1
 // Fill in the blank and fix the errors
 // Make it compile
+#[derive(Debug)]
 enum MessageOne {
     Quit,
     Move { x: i32, y: i32 },
@@ -8,11 +9,11 @@ enum MessageOne {
     ChangeColor(i32, i32, i32),
 }
 fn show_message(msg: MessageOne) {
-    println!("{}", msg);
+    println!("{:?}", msg);
 }
 
 fn exercise1() {
-    let msgs: __ = [
+    let msgs :[MessageOne; 3]  = [
         MessageOne::Quit,
         MessageOne::Move { x: 1, y: 3 },
         MessageOne::ChangeColor(255, 255, 0),

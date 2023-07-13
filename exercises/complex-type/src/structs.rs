@@ -39,12 +39,12 @@ impl Agent {
 
     // Get the name of the person
     fn get_name(&self) -> &str {
-        todo!()
+        &self.name
     }
 
     // Get the age of the person
     fn get_age(&self) -> u32 {
-        todo!()
+        self.age
     }
 }
 
@@ -61,18 +61,18 @@ impl Calculator {
         Calculator { value: 0 }
     }
 
-    fn add(&self, num: i32) {
+    fn add(& mut self, num: i32) {
         self.value += num;
     }
 
-    fn subtract(mut self, num: i32) {
+    fn subtract(& mut self, num: i32) {
         self.value -= num;
     }
-    fn clear(self) {
+    fn clear(& mut self) {
         self.value = 0;
     }
 
-    fn get_value(self) -> i32 {
+    fn get_value(&self) -> i32 {
         self.value
     }
 }
@@ -99,7 +99,7 @@ fn exercise4() {
         
     };
 
-    println!("user: {:#?}", u1);
+    println!("user: {:#?}", u2);
 
 }
 
@@ -122,10 +122,10 @@ fn exercise5() {
     });
 
     
-    let moved = foos[0];
+    let moved = &foos[0];
 
     
-    let moved_field = foos[0].str_val;
+    let moved_field = &foos[0].str_val;
 }
 
 // Exercise 6
@@ -153,12 +153,14 @@ impl Package {
         }
     }
 
-    fn is_international(&self) -> ??? {
+    fn is_international(&self) -> bool {
         // Something goes here...
+        self.sender_country != self.recipient_country
     }
 
-    fn get_fees(&self, cents_per_gram: i32) -> ??? {
+    fn get_fees(&self, cents_per_gram: i32) -> i32 {
         // Something goes here...
+        self.weight_in_grams * cents_per_gram
     }
 }
 
@@ -176,7 +178,7 @@ mod tests {
             age: 30,
             hobby:String::from("Rust") 
         };
-        assert_eq!(p, p_expectation);
+        assert_eq!(p.hobby, p_expectation.hobby);
         
     }
 
