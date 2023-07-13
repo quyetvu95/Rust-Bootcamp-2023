@@ -7,12 +7,15 @@ trait Hello {
         String::from("hi")
     }
 
-    fn say_something(&self) -> String;
+    fn say_something(&self) -> String{
+        String::from("say something")
+    }
 }
 
 //TODO 
 struct Student {}
 impl Hello for Student {
+
 }
 //TODO
 struct Teacher {}
@@ -35,7 +38,7 @@ struct Point {
 // Implement `fn sum` with trait bound in two ways.
 // Run tests
 // Hint: Trait Bound
-fn sum<T>(x: T, y: T) -> T {
+fn sum<T : std::ops::Add<Output = T>>(x: T, y: T) -> T {
     x + y
 }
 
