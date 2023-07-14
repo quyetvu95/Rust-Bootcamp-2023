@@ -3,23 +3,32 @@
 // Make it compile
 // Run tests
 trait Hello {
-    fn say_hi(&self) -> String {
-        String::from("hi")
-    }
+    fn say_hi(&self) -> String;
 
-    fn say_something(&self) -> String{
-        String::from("say something")
-    }
+    fn say_something(&self) -> String;
 }
 
 //TODO 
 struct Student {}
 impl Hello for Student {
+    fn say_something(&self) -> String{
+        String::from("I'm a good student")
+    }
 
+    fn say_hi(&self) -> String {
+        String::from("hi")
+    }
 }
 //TODO
 struct Teacher {}
 impl Hello for Teacher {
+    fn say_hi(&self) -> String {
+        String::from("Hi, I'm your new teacher")
+    }
+
+    fn say_something(&self) -> String {
+        String::from("I'm not a bad teacher")
+    }
 }
 
 
@@ -27,6 +36,8 @@ impl Hello for Teacher {
 // Make it compile in unit test for exercise 2
 // Hint: use #[derive]  for struct Point 
 // Run tests
+#[derive(PartialEq)]
+#[derive(Debug)]
 struct Point {
     x: i32,
     y: i32,
@@ -60,13 +71,13 @@ impl Foo for String {
 }
 
 // IMPLEMENT below with generics and parameters
-fn static_dispatch(x) {
-    todo!()
+fn static_dispatch<T : Foo>(x : &T) -> String{
+    x.method()
 }
 
 // Implement below with trait objects and parameters
-fn dynamic_dispatch(x) {
-    todo!()
+fn dynamic_dispatch(x : &dyn Foo) -> String{
+    x.method()
 }
 
 // Exercise 5 
@@ -93,7 +104,7 @@ fn draw_with_box(x: Box<dyn Draw>) {
     x.draw();
 }
 
-fn draw_with_ref(x: __) {
+fn draw_with_ref(x: &dyn Draw) {
     x.draw();
 }
 
@@ -115,6 +126,21 @@ struct Stack {
 
 //TODO implement Container for Stack
 
+impl Container for Stack {
+    type Item = Vec<u8>;
+
+    fn insert(&mut self, item: Self::Item) {
+        self.insert(item)
+    }
+
+    fn remove(&mut self) -> Option<Self::Item> {
+        self.remove()
+    }
+
+    fn is_empty(&self) -> bool {
+        self.is_empty()
+    }
+}
 
 
 #[cfg(test)]
@@ -154,7 +180,7 @@ mod tests {
         let x = 5u8;
         let y = "Hello".to_string();
     
-        static_dispatch(x);
+        static_dispatch(&x);
         dynamic_dispatch(&y); 
     }
 
@@ -164,7 +190,7 @@ mod tests {
         let y = 8u8;
     
         // Draw x.
-        draw_with_box(__);
+        draw_with_box(Box::new(x));
     
         // Draw y.
         draw_with_ref(&y);
@@ -172,15 +198,16 @@ mod tests {
 
     #[test]
     fn exercise6_should_work(){
-        let mut stack: Stack<u8> = Stack { items: Vec::new() };
+        let vec : Vec<u8> = Vec::new();
+        let mut stack = Stack { items: vec };
         assert!(stack.is_empty());
-        stack.insert(1);
-        stack.insert(2);
-        stack.insert(3);
+        stack.insert(vec![1]);
+        stack.insert(vec![2]);
+        stack.insert(vec![3]);
         assert!(!stack.is_empty());
-        assert_eq!(stack.remove(), Some(3));
-        assert_eq!(stack.remove(), Some(2));
-        assert_eq!(stack.remove(), Some(1));
+        assert_eq!(stack.remove(), Some(vec![3]));
+        assert_eq!(stack.remove(), Some(vec![2]));
+        assert_eq!(stack.remove(), Some(vec![1]));
         assert_eq!(stack.remove(), None);
         assert!(stack.is_empty());
     }
